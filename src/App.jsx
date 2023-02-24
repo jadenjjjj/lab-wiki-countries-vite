@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import reactLogo from './assets/react.svg'
 import './App.css'
 import countries from './countries.json'
@@ -11,14 +11,18 @@ function App() {
   //const [count, setCount] = useState(0)
   const [countryData, setCountryData] = useState(countries); 
 
+  useEffect(() => {
+    fetch('https://ih-countries-api.herokuapp.com/countries')
+      .then(response => response.json())
+      .then(data => setCountryData(data))
+      .catch(error => console.log(error));
+  }, []);
+
   return (
 
     <div className='App'>
       <Navbar />
-      <Routes>
-        <Route path='/' element={<CountriesList countries={countryData} />} />
-        <Route path='/:id' element={<CountryDetails countries={countryData} />} />
-      </Routes>
+      <CountriesList countries={countryData} />
     </div>
 
   )
